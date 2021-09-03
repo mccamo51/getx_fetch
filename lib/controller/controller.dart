@@ -4,11 +4,10 @@ import 'package:new_app/services.dart';
 
 class TestController extends GetxController{
   var isLoadin = true.obs;
-  // ignore: deprecated_member_use
+  
   var product = <Welcome>[].obs;
 @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     fetchData();
   }
