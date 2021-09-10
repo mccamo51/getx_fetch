@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_app/controller/controller.dart';
+import 'package:new_app/model/TaskModel.dart';
+
+import '../util.dart';
 
 class HomePage extends StatelessWidget {
 
@@ -9,48 +12,81 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
-      appBar: AppBar(title: Text("Test GetX", style: TextStyle(color: Colors.black),),elevation: 0,backgroundColor: Colors.transparent,),
-      body: SafeArea(
-        child: Obx((){
-          if(controller.isLoadin.value){
-            return Center(child: CircularProgressIndicator());
-          }else
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                for(int x = 0; x<controller.product.length; x++)
-                
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:8.0, vertical: 4),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      
-                    ),
-                    child: ListTile(
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.person),
-                        ],
-                      ),
-                      title: Text(controller.product[x].title),
-                      subtitle: Text(controller.product[x].body),
-                       trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           Icon(Icons.arrow_forward_ios),
-                         ],
-                       ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
-        })
+    return  Obx((){
+      
+          return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.blue,
+                title: Text(
+                  'Todo App List',
+                  style: 
+          TextStyle(color: Colors.blue),
+                ),
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  controller.addData(
+                    TaskModel(
+                      data: [Data(
+                        id: "1",
+                        activity: "Hello",
+                        checked: false
+                      )]
+                    )
+                  );
+                },
+                backgroundColor: Colors.blue,
+                child: Icon(Icons.add),
+              ),
+              body: ListView.builder(
+                  itemCount: controller.product.length,
+                  itemBuilder: (BuildContext context, int index) 
+                  
+                  {
+                    print(controller.product.length);
+                    return TodoListTile(
+                    todoTitle: controller.product[index].data);
+                  }));
+        });
+  }
+}
+
+
+  
+class TodoListTile extends StatelessWidget {
+   var todoTitle;
+  TestController controller = Get.put(TestController());
+
+  TodoListTile({this.todoTitle});
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
+    // Map<String, dynamic> data =(todoTitle);
+    // print(data);
+
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.toWidth, vertical: 20.toHeight),
+      width: SizeConfig().screenWidth,
+      height: 150.toHeight,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          gradient: LinearGradient(colors: [Colors.yellow, Colors.yellowAccent])),
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("",style: TextStyle(color: Colors.black),),
+            subtitle: Text('This is my first todo'),
+            trailing: IconButton(
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: Colors.pink,
+                ),
+                onPressed: () {
+                  // controller.removeData(todoTitle);ß
+                }),
+          ),
+        ],
       ),
     );
   }

@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:new_app/model.dart';
+import 'package:new_app/model/TaskModel.dart';
 import 'package:new_app/services.dart';
 
 class TestController extends GetxController{
   var isLoadin = true.obs;
   
-  var product = <Welcome>[].obs;
+  var product = <TaskModel>[].obs;
 @override
   void onInit() {
     super.onInit();
@@ -16,7 +17,7 @@ class TestController extends GetxController{
     try {
       isLoadin(true);
     var  productList = ApiService.getData();
-    print(productList.then((value) =>  product.addAll(value)));
+    productList.then((value) => print("========}"));
     
      isLoadin(false);
     } catch (e) {
@@ -25,4 +26,14 @@ class TestController extends GetxController{
 
     }
   }
+
+  void addData(TaskModel list){
+    product.add(list);
+    update();
+  }
+
+  // void removeData(TaskModel index){
+  //   product.removeAt(index);
+  //   update();
+  // }
 }
